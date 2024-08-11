@@ -119,14 +119,14 @@ internal class Program {
             await ProcessPhotoAsync(bot, message);
         } else if (message.Text is not null) {
             String command = message.Text;
-            if (command.StartsWith($"/start{botName}")) {
+            if (command.StartsWith($"/start@{botName}")) {
                 await bot.SendTextMessageAsync(message.Chat.Id, "Hello! This is Anti-Duplicate Image Bot!");
-            } else if (command.StartsWith($"/init{botName}") || command.StartsWith($"/init_sample{botName}")) {
+            } else if (command.StartsWith($"/init@{botName}") || command.StartsWith($"/init_sample@{botName}")) {
                 if (Array.IndexOf<Int64?>(trustedUsers, message.From?.Id) >= 0) {
                     if (bot is not WTelegramBotClient wBot) {
                         await bot.SendTextMessageAsync(message.Chat.Id, $"Oops, not {typeof(WTelegramBotClient).Name}");
                     } else {
-                        await InitAsync(wBot, message, command.StartsWith($"/init_sample{botName}"));
+                        await InitAsync(wBot, message, command.StartsWith($"/init_sample@{botName}"));
                     }
                 } else {
                     await bot.SendTextMessageAsync(message.Chat.Id, "No, I don't trust you. Please look for @FuckWikipedia.");

@@ -19,7 +19,7 @@ public static class BitmapExtensions {
             return bitmap;
         }
 
-        Bitmap bitmap2 = null;
+        Bitmap? bitmap2 = null;
         try {
             bitmap2 = new Bitmap(bitmap.Width, bitmap.Height, PixelFormat.Format24bppRgb);
             ////bitmap2.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
@@ -38,7 +38,7 @@ public static class BitmapExtensions {
     }
 
     public static ByteImage ToLuminanceImage(this Bitmap bitmap) {
-        Bitmap bitmap2 = null;
+        Bitmap? bitmap2 = null;
         try {
             bitmap2 = bitmap.ToRgb24();
             Byte[] array = bitmap2.ToBytes();
@@ -47,7 +47,7 @@ public static class BitmapExtensions {
             Int32 num2 = bitmap2.GetStride() % (bitmap2.Width * num);
             Vector3 vector = new Vector3(66f, 129f, 25f);
             Int32 num3 = 0;
-            Vector3 vector2 = default(Vector3);
+            Vector3 vector2 = default;
             for (Int32 i = 0; i < byteImage.Height; i++) {
                 for (Int32 j = 0; j < byteImage.Width; j++) {
                     vector2.Z = (Int32)array[num3++];
@@ -80,7 +80,7 @@ public static class BitmapExtensions {
     /// <param name="bitmap">bitmap to convert</param>
     /// <returns>Raw byte array with stride bytes</returns>
     public static Byte[] ToBytes(this Bitmap bitmap) {
-        BitmapData lockedBits = null;
+        BitmapData? lockedBits = null;
         try {
             lockedBits = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
             Int32 sizeInBytes = lockedBits.Stride * lockedBits.Height;
