@@ -207,7 +207,7 @@ internal class Program {
         await bot.DownloadFileAsync(file.FilePath!, fileStream);
         Bitmap bitmap = new(Image.FromStream(fileStream));
         Digest hash = ImagePhash.ComputeDigest(bitmap.ToLuminanceImage());
-        await bot.SendTextMessageAsync(message.Chat.Id, $"File {file.FileId} downloaded.");
+        await LoggingAsync(bot, $"File {file.FilePath} downloaded.")
 
         command.CommandText = """
             Select message_id, media_group_id, photo_hash
