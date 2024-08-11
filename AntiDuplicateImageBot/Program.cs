@@ -24,6 +24,10 @@ internal class Program {
     private static SqliteConnection groupConnection = null!;
     private static String? botName;
 
+    private static Int64?[] trustedUsers = [
+        691216126, // FuckWikipedia
+    ];
+
     private static async Task Main(String[] _) {
         String? botToken = Environment.GetEnvironmentVariable("BOT_TOKEN");
         Int32 apiId = Int32.Parse(Environment.GetEnvironmentVariable("API_ID")!);
@@ -117,15 +121,12 @@ internal class Program {
             String command = message.Text;
             if (command.StartsWith($"/start{botName}")) {
                 await bot.SendTextMessageAsync(message.Chat.Id, "Hello! This is Anti-Duplicate Image Bot!");
-            } else if (command.StartsWith($"/init{botName}")) {
-                Int64?[] trustedUsers = [
-                    691216126, // FuckWikipedia
-                ];
+            } else if (command.StartsWith($"/init{botName}") || command.StartsWith($"/init_sample{botName}")) {
                 if (Array.IndexOf<Int64?>(trustedUsers, message.From?.Id) >= 0) {
                     if (bot is not WTelegramBotClient wBot) {
                         await bot.SendTextMessageAsync(message.Chat.Id, $"Oops, not {typeof(WTelegramBotClient).Name}");
                     } else {
-                        await InitAsync(wBot, message);
+                        await InitAsync(wBot, message, command.StartsWith($"/init_sample{botName}"));
                     }
                 } else {
                     await bot.SendTextMessageAsync(message.Chat.Id, "No, I don't trust you. Please look for @FuckWikipedia.");
@@ -134,7 +135,7 @@ internal class Program {
         }
     }
 
-    private static async Task InitAsync(WTelegramBotClient bot, Message message) {
+    private static async Task InitAsync(WTelegramBotClient bot, Message message, Boolean isSample) {
         Chat chat = message.Chat;
         await bot.SendTextMessageAsync(message.Chat.Id, "Insert into database");
         using var command = groupConnection.CreateCommand();
@@ -155,6 +156,8 @@ internal class Program {
         command.Parameters.AddWithValue("$id", chat.Id);
         await command.ExecuteNonQueryAsync();
 
+        if (isSample) { return; }
+        // Loading all messages and record hash.
         await bot.SendTextMessageAsync(message.Chat.Id, "Loading all messages...");
         List<WMessage> allMessages = [];
         Int32 begin = 1;
@@ -162,7 +165,7 @@ internal class Program {
         IEnumerable<Int32> range;
         while (true) {
             if (begin + 100 > end) {
-                range = Enumerable.Range(begin, end - begin); // not include end itself
+                range = Enumerable.Range(begin, end - begin); // not include the end itself.
                 allMessages.AddRange(await bot.GetMessagesById(chat, range));
                 break;
             }
@@ -174,7 +177,6 @@ internal class Program {
         var imageMessages = from msg in allMessages
                             where msg.Type is MessageType.Photo
                             select msg;
-
         foreach (var img_msg in imageMessages) {
             await ProcessPhotoAsync(bot, img_msg);
         }
