@@ -22,11 +22,11 @@ public static class BitmapExtensions {
         Bitmap bitmap2 = null;
         try {
             bitmap2 = new Bitmap(bitmap.Width, bitmap.Height, PixelFormat.Format24bppRgb);
-            bitmap2.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
+            ////bitmap2.SetResolution(bitmap.HorizontalResolution, bitmap.VerticalResolution);
             using (Graphics graphics = Graphics.FromImage(bitmap2)) {
-                graphics.CompositingMode = CompositingMode.SourceCopy;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                graphics.DrawImage(bitmap, 0, 0);
+                //    graphics.CompositingMode = CompositingMode.SourceCopy;
+                //    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                //    graphics.DrawImage(bitmap, 0, 0);
                 //graphics.DrawImage(bitmap,  new Rectangle(0, 0, bitmap2.Width, bitmap2.Height));
             }
 
