@@ -27,7 +27,7 @@ public static class BitmapExtensions {
                 //    graphics.CompositingMode = CompositingMode.SourceCopy;
                 //    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 //    graphics.DrawImage(bitmap, 0, 0);
-                //graphics.DrawImage(bitmap,  new Rectangle(0, 0, bitmap2.Width, bitmap2.Height));
+                graphics.DrawImage(bitmap,  new Rectangle(0, 0, bitmap2.Width, bitmap2.Height));
             }
 
             return bitmap2;
