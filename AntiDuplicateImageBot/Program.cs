@@ -33,7 +33,7 @@ internal class Program {
         Int32 apiId = Int32.Parse(Environment.GetEnvironmentVariable("API_ID")!);
         String apiHash = Environment.GetEnvironmentVariable("API_HASH")!;
 
-        if (String.IsNullOrWhiteSpace(botToken)) {
+        if (String.IsNullOrWhiteSpace(botToken) || String.IsNullOrWhiteSpace(apiHash)) {
             Console.WriteLine("Token is empty!");
             return;
         }
@@ -207,7 +207,7 @@ internal class Program {
         await bot.DownloadFileAsync(file.FilePath!, fileStream);
         Bitmap bitmap = new(Image.FromStream(fileStream));
         Digest hash = ImagePhash.ComputeDigest(bitmap.ToLuminanceImage());
-        await LoggingAsync(bot, $"File {file.FilePath} downloaded.")
+        await LoggingAsync(bot, $"File {file.FilePath} downloaded.");
 
         command.CommandText = """
             Select message_id, media_group_id, photo_hash
