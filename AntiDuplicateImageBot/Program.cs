@@ -14,6 +14,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 using Shipwreck.Phash;
+
 //using Shipwreck.Phash.Bitmaps;
 
 using WMessage = WTelegram.Types.Message;
@@ -205,8 +206,13 @@ internal class Program {
         var file = await bot.GetFileAsync(fileId);
         using MemoryStream fileStream = new();
         await bot.DownloadFileAsync(file.FilePath!, fileStream);
-        Bitmap bitmap = new(Image.FromStream(fileStream));
-        Digest hash = ImagePhash.ComputeDigest(bitmap.ToLuminanceImage());
+
+        Digest hash;
+        using (Image image = Image.FromStream(fileStream))
+        using (Bitmap bitmap = new(image)) {
+            hash = ImagePhash.ComputeDigest(bitmap.ToLuminanceImage());
+        }
+
         await LoggingAsync(bot, $"File {file.FilePath} downloaded.");
 
         command.CommandText = """
