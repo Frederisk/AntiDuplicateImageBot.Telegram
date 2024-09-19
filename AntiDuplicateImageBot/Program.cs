@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
+using Microsoft.Data.Sqlite;
 
 using System;
 using System.Collections.Generic;
@@ -233,7 +233,7 @@ internal class Program {
                 };
                 var score = ImagePhash.GetCrossCorrelation(hash_in, hash);
                 maxScore = Math.Max(score, maxScore);
-                if (score >= 0.9) {
+                if (score >= 0.95) {
                     if (message.MediaGroupId is null || message.MediaGroupId != media_group_id) {
                         var groupStr = message.Chat.Id.ToString();
                         if (groupStr.StartsWith("-100")) {
