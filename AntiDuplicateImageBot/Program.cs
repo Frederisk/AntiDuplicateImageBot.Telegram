@@ -233,7 +233,7 @@ internal class Program {
                 };
                 var score = ImagePhash.GetCrossCorrelation(hash_in, hash);
                 maxScore = Math.Max(score, maxScore);
-                if (score >= 0.95) {
+                if (score >= 0.975) {
                     if (message.MediaGroupId is null || message.MediaGroupId != media_group_id) {
                         var groupStr = message.Chat.Id.ToString();
                         if (groupStr.StartsWith("-100")) {
